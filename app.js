@@ -3,7 +3,8 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     Sequelize = require('sequelize'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    cors = require('cors');
 
 
 sequelize = new Sequelize('sqlite://' + path.join(__dirname, 'invoices.sqlite'), {
@@ -129,7 +130,7 @@ app.set('port', process.env.PORT || 8000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cors());
 // CUSTOMERS API
 
 app.route('/api/customers')
@@ -286,6 +287,6 @@ app.get('*', function(req, res) {
 });
 
 // Starting express server
-http.createServer(app).listen(app.get('port'), function () {
+var server = http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
